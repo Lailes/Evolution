@@ -26,10 +26,9 @@ internal static class GeneticOperators
     }
 
     private const int BarabanSize = 10000;
-    public static IList<Individual> GetChanceSelection(this IList<Individual> individuals, IRandom random, int k = -1)
+    public static IList<Individual> Selection(this IList<Individual> individuals, IRandom random, int k = -1)
     {
         var next = new List<Individual>();
-
         var baraban = new List<Individual>(BarabanSize);
 
         foreach (var individual in individuals)
@@ -71,7 +70,7 @@ internal static class GeneticOperators
             .ToList()
         : individuals
             .ProcessSurviveChance(function)
-            .GetChanceSelection(random, count);
+            .Selection(random, count);
 
 
     public static IList<Individual> Mutation(this IList<Individual> individuals, IRandom random, double mutationPropability) =>

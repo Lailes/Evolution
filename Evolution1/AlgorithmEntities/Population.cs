@@ -63,7 +63,7 @@ public class Population
              _random, 
              _individuals
                 .ProcessSurviveChance(ch => _func(_translationFunction(ch)))
-                .GetChanceSelection(_random)
+                .Selection(_random)
                 .Replication(_random, _bornPropability)
                 .Mutation(_random, _mutationPropability)
                 .Reduction(_random, _individuals.Count, ch => _func(_translationFunction(ch)))
