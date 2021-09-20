@@ -54,7 +54,7 @@ internal static class GeneticOperators
     public static Individual Born(Individual Parent1, Individual Parent2, IRandom random, double bornPropability) =>
         bornPropability > random.Next()
         ? new Deffictive()
-        : new Individual(Cross(Parent1.Chromosome, Parent2.Chromosome, random.Next(1, 7)).Item1);
+        : new Individual(Cross(Parent1.Chromosome, Parent2.Chromosome, random.Next(5, 10)).Item1);
 
     public static IList<Individual> Reduction(this IList<Individual> individuals, IRandom random, int count, FitnessFunction? function = null) =>
       function is null 
@@ -74,7 +74,7 @@ internal static class GeneticOperators
 
     private static Individual Mutate(Individual individual, IRandom random, double mutationPropability) =>
         random.Next() <= mutationPropability
-            ? new Individual(Inverse(individual.Chromosome, random.Next(0, 7)))
+            ? new Individual(Inverse(individual.Chromosome, random.Next(5, 10)))
             : individual;
 
     private static ushort Inverse(ushort num, int k) => (ushort) (num ^ (1 << k));
