@@ -13,7 +13,7 @@ public class Population
     private readonly IRandom _random;
     private readonly TranslationFunction _translationFunction;
     private readonly double _bornPropability = 0.5;
-    private readonly double _mutationPropability = 0.0001;
+    private readonly double _mutationPropability = 0.01;
 
     private Population (TargetFunction func, TranslationFunction chromosomeTranslataor, IRandom random, IList<Individual> individuals) => 
         (_func, _individuals, _translationFunction, _random) = (func, individuals, chromosomeTranslataor, random);

@@ -20,8 +20,6 @@ while True:
 file.close()
 plt.plot(startX, startY, color='blue')
 
-
-
 if len(sys.argv) > 1:
     populationFile = BasePath + '\\Population-' + sys.argv[1] + '.tsv'
     populationFile = open(populationFile, 'r')

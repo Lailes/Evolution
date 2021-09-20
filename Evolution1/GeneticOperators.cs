@@ -28,19 +28,14 @@ internal static class GeneticOperators
     private const int BarabanSize = 10000;
     public static IList<Individual> Selection(this IList<Individual> individuals, IRandom random, int k = -1)
     {
-        var next = new List<Individual>();
-        var baraban = new List<Individual>(BarabanSize);
+        var baraban = individuals
+            .SelectMany(individual => Enumerable.Repeat(individual, (int)(individual.SurviveChance * BarabanSize)))
+            .ToList();
 
-        foreach (var individual in individuals)
-        {
-            var instanceCount = (int)(individual.SurviveChance * BarabanSize);
-            for (int i = 0; i < instanceCount; i++)
-                baraban.Add(individual);
-        }
-        var nextCount = k < 0 ? individuals.Count() : k;
-        for (int i = 0; i < nextCount; i++)
-            next.Add(baraban[random.Next(0, baraban.Count)]);
-        return next;
+        return Enumerable
+            .Range(0, k < 0 ? individuals.Count() : k)
+            .Select(_ => baraban[random.Next(0, baraban.Count)])
+            .ToList();
     }
 
     public static IList<Individual> Replication(this IList<Individual> individuals, IRandom random, double bornPropability) =>
