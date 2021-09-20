@@ -45,7 +45,7 @@ public class Algorithm
 
         var population = Population.CreateInitialPopulation(_function, translation, _initialPopulationSize, new ClassicRandom());
 
-        _logFunc.Invoke(new LogInfo("Initial", population.Positions, null, "" , population.Deviation));
+        _logFunc.Invoke(new LogInfo("Initial", population.Positions, 0, "" , population.Deviation));
 
         while (population.Deviation > _populationDeviationStopFactor)
         {

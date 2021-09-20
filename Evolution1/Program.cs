@@ -20,7 +20,7 @@ var algorithm = new Algorithm
         LogInfo,
         range,
         populationDeviationStopFactor: 0.001,
-        initialPopulationSize: 500
+        initialPopulationSize: 250
     );
 
 
