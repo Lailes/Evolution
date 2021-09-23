@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,20 +14,43 @@ public class Population
     private readonly double _bornPropability = 0.5;
     private readonly double _mutationPropability = 0.01;
 
-    private Population (TargetFunction func, TranslationFunction chromosomeTranslataor, IRandom random, IList<Individual> individuals) => 
-        (_func, _individuals, _translationFunction, _random) = (func, individuals, chromosomeTranslataor, random);
+    private Population 
+        (
+        TargetFunction func, 
+        TranslationFunction chromosomeTranslataor, 
+        IRandom random, 
+        double bornPropability, 
+        double mutationPropability,
+        IList<Individual> individuals
+        )
+    {
+        _func = func;
+        _translationFunction = chromosomeTranslataor;
+        _random = random;
+        _bornPropability = bornPropability;
+        _mutationPropability = mutationPropability;
+        _individuals = individuals; 
+    }
 
     public static Population CreateInitialPopulation
         (
-        TargetFunction func, TranslationFunction 
-        chromosomeTranslataor, 
+        TargetFunction func, 
+        TranslationFunction chromosomeTranslataor, 
         ushort startCount,
-        IRandom random
-        ) =>
-        new(func, chromosomeTranslataor, random, Enumerable
-                .Range(0, startCount)
-                .Select(_ => new Individual((ushort)new ClassicRandom().Next(0, ushort.MaxValue)))
-                .ToList());
+        IRandom random, 
+        double bornPropability, 
+        double mutationPropability
+        ) => new Population(
+                            func, 
+                            chromosomeTranslataor, 
+                            random, 
+                            bornPropability, 
+                            mutationPropability, 
+                            Enumerable
+                                .Range(0, startCount)
+                                .Select(_ => new Individual((ushort)new ClassicRandom().Next(0, ushort.MaxValue)))
+                                .ToList()
+                           );
 
 
     public double Deviation
@@ -60,7 +82,9 @@ public class Population
          new Population(
              _func, 
              _translationFunction, 
-             _random, 
+             _random,
+             _bornPropability,
+             _mutationPropability,
              _individuals
                 .ProcessSurviveChance(ch => _func(_translationFunction(ch)))
                 .Selection(_random)

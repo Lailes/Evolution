@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 using Console.AlgorithmEntities;
 using ConsoleEvolution.AlgorithmEntities;
@@ -15,22 +16,28 @@ public class Algorithm
 
     private double _populationDeviationStopFactor;
     private ushort _initialPopulationSize;
+    private double _bornPropability;
+    private double _mutationPropability;
     private ushort _populationNumber = 0;
 
     public Algorithm
-        (
-        TargetFunction function,
-        LogFunction logFunc, 
+    (
+        TargetFunction targetFunction,
+        LogFunction logingFunction, 
         (double Start, double End) range,
-        double populationDeviationStopFactor,
-        ushort initialPopulationSize
-        )
+        double populationDeviationStopFactor = 0.0001,
+        ushort initialPopulationSize = 100,
+        double bornPropability = 0.5,
+        double mutationPropability = 0.001
+    )
     {
-        _function = function ?? throw new ArgumentNullException(nameof(function));
-        _logFunc = logFunc ?? throw new ArgumentNullException(nameof(logFunc));
+        _function = targetFunction ?? throw new ArgumentNullException(nameof(targetFunction));
+        _logFunc = logingFunction ?? throw new ArgumentNullException(nameof(logingFunction));
         _range = range.End > range.Start ? range : throw new ArgumentException(nameof(range));
         _populationDeviationStopFactor = populationDeviationStopFactor;
         _initialPopulationSize = initialPopulationSize;
+        _bornPropability = bornPropability;
+        _mutationPropability = mutationPropability;
     }
 
     public double Solve() 
@@ -43,7 +50,7 @@ public class Algorithm
 
         TranslationFunction translation = chromosome => chromosome * scale + _range.Start;
 
-        var population = Population.CreateInitialPopulation(_function, translation, _initialPopulationSize, new ClassicRandom());
+        var population = Population.CreateInitialPopulation(_function, translation, _initialPopulationSize, new ClassicRandom(), _bornPropability, _mutationPropability);
 
         _logFunc.Invoke(new LogInfo("Initial", population.Positions, 0, "" , population.Deviation));
 
@@ -64,6 +71,8 @@ public class Algorithm
 
         return population.Result;
     }
+
+    public Task<double> SolveAsync() => Task.Run(() => Solve());
 }
 
 public delegate double TargetFunction(double x);

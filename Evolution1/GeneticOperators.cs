@@ -24,11 +24,11 @@ internal static class GeneticOperators
             .ToList();
     }
 
-    private const int BarabanSize = 10000;
+    private const int RoulletSize = 10000;
     public static IList<Individual> Selection(this IList<Individual> individuals, IRandom random, int k = -1)
     {
         var baraban = individuals
-            .SelectMany(individual => Enumerable.Repeat(individual, (int)(individual.SurviveChance * BarabanSize)))
+            .SelectMany(individual => Enumerable.Repeat(individual, (int)(individual.SurviveChance * RoulletSize)))
             .ToList();
 
         return Enumerable
@@ -53,8 +53,8 @@ internal static class GeneticOperators
 
     public static Individual Born(Individual Parent1, Individual Parent2, IRandom random, double bornPropability) =>
         bornPropability > random.Next()
-        ? new Deffictive()
-        : new Individual(Cross(Parent1.Chromosome, Parent2.Chromosome, random.Next(5, 10)).Item1);
+            ? new Deffictive()
+            : new Individual(Cross(Parent1.Chromosome, Parent2.Chromosome, random.Next(5, 10)).Item1);
 
     public static IList<Individual> Reduction(this IList<Individual> individuals, IRandom random, int count, FitnessFunction? function = null) =>
       function is null 
