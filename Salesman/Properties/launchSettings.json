@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Algorithm": {
+      "commandName": "Project",
+      "commandLineArgs": "C:\\Users\\Auriel\\Desktop\\matrix.txt"
+    }
+  }
+}
